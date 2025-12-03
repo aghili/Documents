@@ -1,0 +1,42 @@
+@startuml
+skinparam backgroundColor #FEFEFE
+skinparam classAttributeIconSize 0
+
+package "Presentation Layer (WPF)" {
+  [MainDashboardView] --> [MainDashboardViewModel]
+  [InvoiceView] --> [InvoiceViewModel]
+  [AccountingDocumentView] --> [AccountingDocumentViewModel]
+  [ModianIntegrationView] --> [ModianIntegrationViewModel]
+}
+
+package "Application Layer (ViewModels & Services)" {
+  [IInvoiceService] <|.. InvoiceService
+  [IAccountingService] <|.. AccountingService
+  [IModianIntegrationService] <|.. ModianIntegrationService
+  [IDocumentManagementService] <|.. DocumentManagementService
+}
+
+package "Domain Layer (Entities)" {
+  class Invoice
+  class InvoiceItem
+  class Document
+  class JournalEntry
+  class AccountCode
+  class ModianInvoice
+  class CommodityId
+}
+
+package "Infrastructure Layer (EF Core)" {
+  [AppDbContext] --> Invoice
+  [AppDbContext] --> Document
+  [AppDbContext] --> ModianInvoice
+  [AppDbContext] --> AccountCode
+}
+
+Invoice "1" --> "*" InvoiceItem
+Invoice --> ModianInvoice : ارسال به مودیان
+Document "1" --> "*" JournalEntry
+AccountCode "1" --> "*" AccountCode : ParentId (درختی)
+Invoice --> Document : تولید خودکار سند
+
+@enduml
