@@ -90,6 +90,9 @@
 ### Deployment Diagram
 ![Deployment Diagram](./puml/deployment_diagram.puml)
 
+### Deployment Diagram
+![Activity Diagram](./puml/deployment_diagram.puml)
+
 ---
 
 ## ابزارها و کتابخانه‌ها

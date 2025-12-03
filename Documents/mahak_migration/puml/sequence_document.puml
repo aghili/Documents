@@ -1,0 +1,19 @@
+@startuml
+participant "InvoiceViewModel" as VM
+participant "InvoiceService" as InvServ
+participant "AccountingService" as AccServ
+participant "DocumentManagementService" as DocServ
+participant "AppDbContext" as DB
+
+VM -> InvServ : SaveInvoice(invoice)
+InvServ -> AccServ : CreateDocumentFromInvoice(invoice)
+AccServ -> AccServ : محاسبه بدهکار/بستانکار (حساب فروش، موجودی، مشتری و ...)
+AccServ --> DocServ : new Document + JournalEntries
+DocServ -> DB : Add(Document)
+DocServ -> DB : AddRange(JournalEntries)
+DB --> DocServ : SaveChanges()
+DocServ --> AccServ : DocumentId
+AccServ --> InvServ : DocumentId
+InvServ --> VM : Invoice + DocumentId
+VM --> کاربر : "فاکتور و سند ثبت شد"
+@enduml
