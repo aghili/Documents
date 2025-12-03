@@ -1,0 +1,78 @@
+@startuml
+entity "Invoice" {
+  *Id : Guid <<PK>>
+  --
+  InvoiceNumber : string
+  Date : DateTime
+  PersonId : Guid <<FK>>
+  TotalAmount : decimal
+  DocumentId : Guid? <<FK>>
+  ModianInvoiceId : Guid? <<FK>>
+}
+
+entity "InvoiceItem" {
+  *Id : Guid <<PK>>
+  --
+  InvoiceId : Guid <<FK>>
+  ProductId : Guid <<FK>>
+  Quantity : decimal
+  UnitPrice : decimal
+  Discount : decimal
+}
+
+entity "Document" {
+  *Id : Guid <<PK>>
+  --
+  DocumentNumber : int
+  Date : DateTime
+  Description : string
+  TotalDebit : decimal
+  TotalCredit : decimal
+  IsBalanced : bool
+}
+
+entity "JournalEntry" {
+  *Id : Guid <<PK>>
+  --
+  DocumentId : Guid <<FK>>
+  AccountCodeId : Guid <<FK>>
+  Debit : decimal
+  Credit : decimal
+  Description : string
+}
+
+entity "AccountCode" {
+  *Id : Guid <<PK>>
+  --
+  Code : string
+  Name : string
+  ParentId : Guid? <<FK>>
+  Level : int
+}
+
+entity "ModianInvoice" {
+  *Id : Guid <<PK>>
+  --
+  InvoiceId : Guid <<FK>>
+  Uid : string
+  Status : string
+  SendDate : DateTime?
+  ErrorMessage : string
+}
+
+entity "CommodityId" {
+  *ProductId : Guid <<PK,FK>>
+  --
+  Gtin : string
+  Nbsi : string
+  Status : string
+}
+
+Invoice ||--o{ InvoiceItem
+Invoice ||--|| Document
+Document ||--o{ JournalEntry
+JournalEntry }o--|| AccountCode
+AccountCode ||--o{ AccountCode : "Parent > Child"
+Invoice ||--o| ModianInvoice
+Product ||--o| CommodityId
+@enduml
