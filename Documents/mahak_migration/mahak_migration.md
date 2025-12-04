@@ -131,13 +131,21 @@
 ---
 
 ## ساختار پیشنهادی پروژه
+
 src/
+
 ├── Mahak.UI/                  (WPF Views + ViewModels)
+
 ├── Mahak.Application/         (Services + Interfaces)
+
 ├── Mahak.Domain/              (Entities)
+
 ├── Mahak.Infrastructure/      (EF Core + Repositories)
+
 ├── Mahak.ModianIntegration/   (سرویس مودیان)
+
 ├── Mahak.Accounting/          (اسناد و حسابداری)
+
 └── Mahak.Tests/
 
 
