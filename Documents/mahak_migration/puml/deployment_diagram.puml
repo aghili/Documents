@@ -1,0 +1,15 @@
+@startuml
+!theme vibrant
+' ۶. Deployment Diagram
+node "Client PC" {
+  [Mahak .NET App] as App
+  database "SQL Server / SQLite" as DB
+}
+
+cloud "Internet" {
+  [Mahak Cloud Serivice] as API
+}
+
+App --> DB
+App --> API : Sync Data
+@enduml
