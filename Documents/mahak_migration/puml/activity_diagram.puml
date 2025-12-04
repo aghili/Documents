@@ -1,24 +1,34 @@
 @startuml
+' 3. Activity Diagram – Complete Invoice Issuing Process
 start
-:وارد کردن اقلام فاکتور;
-:اعمال تخفیف/حق سرویس;
-:محاسبه جمع نهایی;
-if (نوع تسویه؟) then (نقدی)
-  :ثبت پرداخت نقدی/کارت
-else (نسیه/چک/اقساط)
-  :انتخاب شرایط پرداخت
+
+:User opens Invoice form;
+:Enter items, quantities, prices;
+:Apply line/group/discount;
+:Calculate totals;
+
+if (Payment type?) then (Cash/Card)
+  :Register payment immediately
+else (Credit/Check/Installment)
+  :Select payment terms
 endif
-:ذخیره فاکتور در دیتابیس;
-:تولید خودکار سند حسابداری;
-if (ارسال به مودیان فعال؟) then (بله)
-  :ارسال به سامانه مودیان
-  if (موفق؟) then (بله)
-    :نمایش UID و وضعیت
-  else (خیر)
-    :نمایش خطا + ذخیره برای retry
+
+:Save invoice locally;
+:Auto-create accounting document;
+:System generates Journal Entries;
+
+if (Send to Mahak Web Service enabled?) then (Yes)
+  :Call MahakWebServiceClient.SendInvoice()
+  if (API response OK?) then (Yes)
+    :Show Remote Invoice ID
+    :Log success in WebServiceLog
+  else (No)
+    :Show error + Queue for retry
+    :Log failure
   endif
-else (خیر)
+else (No)
 endif
-:چاپ فاکتور/فیش;
+
+:Print invoice / receipt;
 stop
 @enduml
