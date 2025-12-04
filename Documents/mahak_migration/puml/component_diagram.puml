@@ -1,0 +1,9 @@
+@startuml
+' ۵. Component Diagram
+component "Mahak WPF App" as App
+component "Local DB" as DB
+component "Mahak Cloud API" as API
+
+App --> DB : EF Core
+App --> API : HttpClient
+@enduml
