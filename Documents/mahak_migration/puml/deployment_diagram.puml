@@ -1,15 +1,15 @@
 @startuml
-!theme vibrant
-' ۶. Deployment Diagram
-node "Client PC" {
-  [Mahak .NET App] as App
-  database "SQL Server / SQLite" as DB
+' 6. Deployment Diagram
+node "User PC / Company Server" {
+  [Mahak .NET Desktop App] as App
+  database "Local Database" as DB
 }
 
 cloud "Internet" {
-  [Mahak Cloud Serivice] as API
+  [Mahak Web Service\n(mahak-service.ir)] as MWS
 }
 
-App --> DB
-App --> API : Sync Data
+App --> DB : Local data
+App --> MWS : Send invoices
+MWS --> App : Response + Remote ID
 @enduml

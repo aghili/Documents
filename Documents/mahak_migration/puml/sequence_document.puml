@@ -1,19 +1,21 @@
 @startuml
-participant "InvoiceViewModel" as VM
-participant "InvoiceService" as InvServ
-participant "AccountingService" as AccServ
-participant "DocumentManagementService" as DocServ
-participant "AppDbContext" as DB
+' 3. Sequence – Auto-create Accounting Document
+participant VM as "InvoiceViewModel"
+participant IS as "InvoiceService"
+participant AS as "AccountingService"
+participant DB as "DbContext"
 
-VM -> InvServ : SaveInvoice(invoice)
-InvServ -> AccServ : CreateDocumentFromInvoice(invoice)
-AccServ -> AccServ : محاسبه بدهکار/بستانکار (حساب فروش، موجودی، مشتری و ...)
-AccServ --> DocServ : new Document + JournalEntries
-DocServ -> DB : Add(Document)
-DocServ -> DB : AddRange(JournalEntries)
-DB --> DocServ : SaveChanges()
-DocServ --> AccServ : DocumentId
-AccServ --> InvServ : DocumentId
-InvServ --> VM : Invoice + DocumentId
-VM --> کاربر : "فاکتور و سند ثبت شد"
+VM -> IS: SaveInvoice()
+activate IS
+IS -> AS: CreateDocumentFromInvoice()
+activate AS
+AS -> AS: Calculate Debit/Credit entries
+AS -> DB: Add(Document + JournalEntries)
+activate DB
+DB --> AS: SaveChanges()
+deactivate DB
+AS --> IS: DocumentId
+deactivate AS
+IS --> VM: Success + DocumentId
+deactivate IS
 @enduml

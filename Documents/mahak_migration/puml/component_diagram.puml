@@ -1,9 +1,14 @@
 @startuml
-' ۵. Component Diagram
-component "Mahak WPF App" as App
-component "Local DB" as DB
-component "Mahak Cloud API" as API
+' 5. Component Diagram
+component "Mahak Desktop App\n(.NET 8 WPF)" as App
+component "Local Database\n(SQLite / SQL Server)" as DB
+component "Mahak Web Service\n(Cloud API)" as MWS
 
-App --> DB : EF Core
-App --> API : HttpClient
+App --> DB : Entity Framework Core
+App --> MWS : HttpClient + JWT/Token
+note right of MWS
+  Official Mahak Cloud API
+  Replaces direct Modian calls
+  One-click sync
+end note
 @enduml

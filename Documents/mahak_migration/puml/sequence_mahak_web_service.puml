@@ -1,0 +1,27 @@
+@startuml
+' 2. Sequence – Send Invoice to Mahak Web Service
+actor User
+participant "InvoiceView" as V
+participant "InvoiceViewModel" as VM
+participant "InvoiceService" as S
+participant "MahakWebServiceClient" as WS
+participant "Mahak Cloud API" as API
+
+User -> V: Create & Send Invoice
+activate V
+V -> VM: SendCommand
+activate VM
+VM -> S: GenerateJsonPayload()
+S --> VM: JSON ready
+VM -> WS: SendInvoiceAsync(payload)
+activate WS
+WS -> API: POST /api/v2/invoices
+activate API
+API --> WS: { "status":"SUCCESS", "invoiceId":"MHK-..." }
+deactivate API
+WS --> VM: Log success + Remote ID
+VM --> V: Show "Sent to Mahak Cloud"
+deactivate WS
+deactivate VM
+deactivate V
+@enduml

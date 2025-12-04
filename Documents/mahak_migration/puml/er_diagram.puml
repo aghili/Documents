@@ -7,7 +7,7 @@ entity "Invoice" {
   PersonId : Guid <<FK>>
   TotalAmount : decimal
   DocumentId : Guid? <<FK>>
-  ModianInvoiceId : Guid? <<FK>>
+  WebServiceInvoiceId : Guid? <<FK>>
 }
 
 entity "InvoiceItem" {
@@ -50,7 +50,7 @@ entity "AccountCode" {
   Level : int
 }
 
-entity "ModianInvoice" {
+entity "WebServiceInvoice" {
   *Id : Guid <<PK>>
   --
   InvoiceId : Guid <<FK>>
@@ -73,6 +73,6 @@ Invoice ||--|| Document
 Document ||--o{ JournalEntry
 JournalEntry }o--|| AccountCode
 AccountCode ||--o{ AccountCode : "Parent > Child"
-Invoice ||--o| ModianInvoice
+Invoice ||--o| WebServiceInvoice
 Product ||--o| CommodityId
 @enduml
